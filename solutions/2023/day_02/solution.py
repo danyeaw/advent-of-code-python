@@ -38,10 +38,10 @@ class Solution(StrSplitSolution):
         result = 0
         for game_num, line in enumerate(self.input, start=1):
             _, game_record = line.split(": ")
-            min_per_color: dict[str, int] = defaultdict(int)
+            max_per_color: dict[str, int] = defaultdict(int)
 
             for count, color in get_count_color(game_record):
-                min_per_color[color] = max(min_per_color[color], int(count))
-            result += power_of_numbers(list(min_per_color.values()))
+                max_per_color[color] = max(max_per_color[color], int(count))
+            result += power_of_numbers(list(max_per_color.values()))
 
         return result
