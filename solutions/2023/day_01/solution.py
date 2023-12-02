@@ -1,17 +1,9 @@
-from string import digits
-
 from ...base import StrSplitSolution, answer
 
 
 def find_calibration_value(line: str) -> int:
-    first = None
-    last = None
-    for char in line:
-        if char in digits:
-            if first is None:
-                first = char
-            last = char
-    return int(f"{first}{last}")
+    digits = [digit for digit in line if digit.isdigit()]
+    return int(f"{digits[0]}{digits[-1]}")
 
 
 class Solution(StrSplitSolution):
