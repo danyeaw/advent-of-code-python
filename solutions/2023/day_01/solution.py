@@ -20,9 +20,8 @@ def find_calibration_value(line: str) -> int:
 
 def replace_words(line: str) -> str:
     for word, digit in str_to_digit.items():
-        if word in line:
-            # Don't remove the first and last letters since words can overlap
-            line = line.replace(word, f"{word[0]}{digit}{word[-1]}")
+        # Don't remove the first and last letters since words can overlap
+        line = line.replace(word, f"{word[0]}{digit}{word[-1]}")
     return line
 
 
