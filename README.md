@@ -1,19 +1,6 @@
-# @xavdid's Python Advent of Code Project Template
+# Python Advent of Code Solution
 
-This is my tried-and-true Python utility package for the phenomenal [Advent of Code](https://adventofcode.com/) puzzles. It handles creating stub solutions, input parsing, and printing your answer, letting you focus on the actual solve. I've been [using it since 2017](https://github.com/xavdid/advent-of-code).
-
-Additionally, Over in the main repo, I include a step-by-step [explanation of each puzzle](https://advent-of-code.xavd.id/) if you're in the learning mood!
-
-## Quickstart
-
-To use this base class for your own solutions:
-
-1. Ensure you have Python `3.12` or higher. You can use [pyenv](https://github.com/pyenv/pyenv) or [asdf](https://asdf-vm.com/) to manage your Python versions. It may work on older versions, but `3.12`-specific features will be added without further breaking changes
-2. Create a new repo using this template ([docs](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template)) and clone it locally
-3. Start a new solution using `./start`
-4. Edit the newly created file at `solutions/YEAR/day_01/solution.py`
-5. Run your code answers using `./advent`
-6. Repeat and enjoy!
+These are my advent of code solutions starting in 2023.
 
 ## Commands
 
