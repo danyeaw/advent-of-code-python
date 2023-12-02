@@ -1,4 +1,4 @@
-select = ["E", "F", "I001"]
+select = ["I", "E", "F", "I001"]
 
 
 ignore = [
