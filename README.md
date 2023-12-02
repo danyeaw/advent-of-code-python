@@ -1,6 +1,6 @@
-# Python Advent of Code Solution
+# Dan's Python Advent of Code Solutions
 
-These are my advent of code solutions starting in 2023.
+These are my [Advent of Code](https://adventofcode.com) solutions starting in 2023 using Python.
 
 ## Commands
 
@@ -16,7 +16,8 @@ Scaffold files to start a new Advent of Code solution
 
 **positional arguments**:
 
-- `day` (optional): Which puzzle day to start, between `[1,25]`. Defaults to the next day _without_ a folder (matching `day_NN`) in the specified year.
+- `day` (optional): Which puzzle day to start, between `[1,25]`. Defaults to
+  the next day _without_ a folder (matching `day_NN`) in the specified year.
 
 **optional arguments**:
 
@@ -96,15 +97,22 @@ Each `day_NN` folder has the following files:
 
 ### The `Solution` Class
 
-A helpful base class on which to build your AoC solutions. It's got 2 required properties (which should be pre-filled if you use `./start`): `_year` and `_day`, corresponding to the puzzle you're solving.
+A helpful base class on which to build your AoC solutions. It's got 2 required
+properties (which should be pre-filled if you use `./start`): `_year` and
+`_day`, corresponding to the puzzle you're solving.
 
-Your puzzle input, the parsed contents of the day's `input.txt`, will be available at `self.input`. Learn more in [Reading Input](#reading-input).
+Your puzzle input, the parsed contents of the day's `input.txt`, will be
+available at `self.input`. Learn more in [Reading Input](#reading-input).
 
-There's also a convenience method for print-based debugging: `self.debug()`. You can pass it any number of items and they'll get pretty-printed. It only prints if you use the `--debug` flag with `./advent`.
+There's also a convenience method for print-based debugging: `self.debug()`.
+You can pass it any number of items and they'll get pretty-printed. It only
+prints if you use the `--debug` flag with `./advent`.
 
 ### Reading Input
 
-AoC input takes a number of forms, so there are a number of simple modes for input parsing. Your generated `Solution` class should inherit from one of the following classes, which will parse `self.input` for you:
+AoC input takes a number of forms, so there are a number of simple modes for
+input parsing. Your generated `Solution` class should inherit from one of the
+following classes, which will parse `self.input` for you:
 
 | Inherited Class    | description                                               | sample for this mode  |
 | ------------------ | --------------------------------------------------------- | --------------------- |
@@ -160,9 +168,15 @@ for BaseClass in [StrSplitSolution, IntSplitSolution]:
 
 ### Solution Functions
 
-Each AoC puzzle has two parts, so there are two functions you need to write: `part_1` and `part_2`. Each should return an `int`, since that's typically the answer that AoC expects.
+Each AoC puzzle has two parts, so there are two functions you need to write:
+`part_1` and `part_2`. Each should return an `int`, since that's typically the
+answer that AoC expects.
 
-Sometimes, it's easier to calculate both parts in a single function (such as if the answer is asking about two parts of a single computation). In that case, there's also a `solve()` method, which should return a 2-tuple with your answers (like `(5, 7)`). `solve` **takes precedence if present**. Feel free to delete any unused functions when you're done.
+Sometimes, it's easier to calculate both parts in a single function (such as if
+the answer is asking about two parts of a single computation). In that case,
+there's also a `solve()` method, which should return a 2-tuple with your
+answers (like `(5, 7)`). `solve` **takes precedence if present**. Feel free to
+delete any unused functions when you're done.
 
 ```py
 
@@ -191,7 +205,9 @@ class Solution(TextSolution):
 
 ### Saving Answers
 
-Once you've solved the puzzle, you can decorate your answer function (`solve` or `part_N`) with the `@answer` decorator. It asserts that the value returned from the function is whatever you pass to the decorator:
+Once you've solved the puzzle, you can decorate your answer function (`solve`
+or `part_N`) with the `@answer` decorator. It asserts that the value returned
+from the function is whatever you pass to the decorator:
 
 ```py
 class Solution(TextSolution):
@@ -207,21 +223,31 @@ class Solution(TextSolution):
         return 123 # err!
 ```
 
-This is helpful for ensuring your answer doesn't change when editing your code after you've solved the puzzle. It's included as a comment in the template. It's ignored when running against test input, so it's easy to verify as you go.
+This is helpful for ensuring your answer doesn't change when editing your code
+after you've solved the puzzle. It's included as a comment in the template.
+It's ignored when running against test input, so it's easy to verify as you go.
 
 ### Debugging
 
-The base class includes a `self.debug` method which will pretty-print all manner of inputs. These only show up when the `--debug` flag is used, making it a convenient way to show debugging info selectively.
+The base class includes a `self.debug` method which will pretty-print all
+manner of inputs. These only show up when the `--debug` flag is used, making it
+a convenient way to show debugging info selectively.
 
 ### Linting & Type Checking
 
 I recommend the following tools:
 
-- [Ruff](https://astral.sh/ruff), a lightning-fast linter (to help you catch bugs)
-- [Pyright](https://github.com/microsoft/pyright), a type checker to identify logical errors (also available in VSCode using their Python plugin)
+- [Ruff](https://astral.sh/ruff), a lightning-fast linter (to help you catch
+  bugs)
+- [Pyright](https://github.com/microsoft/pyright), a type checker to
+  identify logical errors (also available in VSCode using their Python plugin)
 
-If you have both available, then `just lint` will run them both. I've included a simple `ruff` configuration file to help get you started.
+If you have both available, then `just lint` will run them both. I've included
+a simple `ruff` configuration file to help get you started.
 
 ### Marking Slow Solutions
 
-If you're running many solutions at once and want to exclude individual parts of solutions (or entire days), you can mark individual functions with the `@slow` decorator. They'll print a warning, but won't actually run the solution.
+If you're running many solutions at once and want to exclude individual parts
+of solutions (or entire days), you can mark individual functions with the
+`@slow` decorator. They'll print a warning, but won't actually run the
+solution.
