@@ -5,10 +5,10 @@ from math import prod
 from ...base import StrSplitSolution, answer
 
 
-def get_coord_adjacent_symbol_to_number(schematic: str) -> dict[str, list]:
+def get_symbol_coord_to_adjacent_num(schematic: str) -> dict[str, list]:
     width = len(schematic[0])
     height = len(schematic)
-    coord_adjacent_symbol_to_number = {
+    symbol_coord_to_adjacent_num = {
         (r, c): []
         for r in range(width)
         for c in range(height)
@@ -21,9 +21,9 @@ def get_coord_adjacent_symbol_to_number(schematic: str) -> dict[str, list]:
                 for r in (row_num - 1, row_num, row_num + 1)
                 for c in range(num.start() - 1, num.end() + 1)
             }
-            for coord in adjacent_area & coord_adjacent_symbol_to_number.keys():
-                coord_adjacent_symbol_to_number[coord].append(int(num.group()))
-    return coord_adjacent_symbol_to_number
+            for coord in adjacent_area & symbol_coord_to_adjacent_num.keys():
+                symbol_coord_to_adjacent_num[coord].append(int(num.group()))
+    return symbol_coord_to_adjacent_num
 
 
 class Solution(StrSplitSolution):
@@ -34,7 +34,7 @@ class Solution(StrSplitSolution):
     def part_1(self) -> int:
         return sum(
             sum(value)
-            for value in get_coord_adjacent_symbol_to_number(self.input).values()
+            for value in get_symbol_coord_to_adjacent_num(self.input).values()
         )
 
     @answer(75519888)
@@ -42,6 +42,6 @@ class Solution(StrSplitSolution):
         # There are no symbols except *'s that are adjacent to exactly two numbers
         return sum(
             prod(value)
-            for value in get_coord_adjacent_symbol_to_number(self.input).values()
+            for value in get_symbol_coord_to_adjacent_num(self.input).values()
             if len(value) == 2
         )
