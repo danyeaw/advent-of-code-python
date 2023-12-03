@@ -12,15 +12,15 @@ an area around each returned number and summed up any numbers that had a symbol
 in this area.
 
 The updated solution is using a couple of data structures which uses a little
-bit more memory, but greatly simplifies the solution. This is possible since
-the schematic is 140x140 and we can treat it like a board with rows and
-columns. The first data structure, a dictionary, puts all symbols on the board,
-and saves it with the key being the coordinate to the symbol and the value
-being a list of adjacent numbers. When initializing the dictionary, the values
-start out being blank lists. We still find the numbers in each row the same
-way, but we build the area using a set of tuple coordinates. We then use the
-bit-wise and `&` to overlay the set with the keys of the dictionary. Finally,
-we sum up the sum of the dictionary values.
+bit more memory with about the same speed, but greatly simplifies the solution.
+This is possible since the schematic is 140x140, and we can treat it like a
+board with rows and columns. The first data structure, a dictionary, puts all
+symbols on the board, and saves it with the key being the coordinate to the
+symbol and the value being a list of adjacent numbers. When initializing the
+dictionary, the values start out being blank lists. We still find the numbers
+in each row the same way, but we build the area using a set of tuple
+coordinates. We then use the bit-wise and `&` to overlay the set with the keys
+of the dictionary. Finally, we sum up the sum of the dictionary values.
 
 ## Part 2
 
