@@ -5,16 +5,16 @@ from math import prod
 from ...base import StrSplitSolution, answer
 
 
-def get_coord_adjacent_symbol_to_number(board: str) -> dict[str, list]:
-    width = len(board[0])
-    height = len(board)
+def get_coord_adjacent_symbol_to_number(schematic: str) -> dict[str, list]:
+    width = len(schematic[0])
+    height = len(schematic)
     coord_adjacent_symbol_to_number = {
         (r, c): []
         for r in range(width)
         for c in range(height)
-        if board[r][c] not in "01234566789."
+        if schematic[r][c] not in "01234566789."
     }
-    for row_num, row in enumerate(board):
+    for row_num, row in enumerate(schematic):
         for num in re.finditer(r"\d+", row):
             adjacent_area = {
                 (r, c)
