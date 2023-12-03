@@ -23,13 +23,8 @@ class Solution(StrSplitSolution):
                     area = []
                     left_num_idx = int(match.span()[0])
                     right_num_idx = int(match.span()[1])
-                    left_area_idx = (
-                        left_num_idx - 1 if left_num_idx > 0 else left_num_idx
-                    )
-                    if right_num_idx < len(current_row) - 1:
-                        right_area_idx = right_num_idx + 1
-                    else:
-                        right_area_idx = right_num_idx
+                    left_area_idx = max(left_num_idx - 1, 0)
+                    right_area_idx = min(right_num_idx + 1, len(current_row))
                     if previous_row:
                         area.append(previous_row[left_area_idx:right_area_idx])
                     area.extend(
