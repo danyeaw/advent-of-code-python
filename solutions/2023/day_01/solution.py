@@ -1,4 +1,4 @@
-from ...base import StrSplitSolution, answer # noqa
+from ...base import StrSplitSolution, answer  # noqa
 
 str_to_digit = {
     "one": "1",

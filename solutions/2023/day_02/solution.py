@@ -27,8 +27,8 @@ class Solution(StrSplitSolution):
         for game_num, line in enumerate(self.input, start=1):
             _, game_record = line.split(": ")
             if all(
-                    int(count) <= {"red": 12, "green": 13, "blue": 14}[color]
-                    for count, color in get_count_color(game_record)
+                int(count) <= {"red": 12, "green": 13, "blue": 14}[color]
+                for count, color in get_count_color(game_record)
             ):
                 valid_sum += int(game_num)
         return valid_sum
