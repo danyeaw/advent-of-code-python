@@ -22,7 +22,7 @@ class Solution(StrSplitSolution):
             winners = [int(num) for num in winners]
             my_numbers = [int(num) for num in my_numbers]
             if intersect := set(winners).intersection(my_numbers):
-                total_worth.append(2**(len(intersect)) // 2)
+                total_worth.append(2**(len(intersect) - 1))
         return sum(total_worth)
 
     # @answer(1234)
