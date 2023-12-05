@@ -11,3 +11,7 @@ up just replacing the two spaaces with one, and then using `str.split` to proces
 
 ## Part 2
 
+This was a tough one to figure out, since I was originally thinking that the problem was asking for recursion.
+Once I talked through it again, I created a list that held the number of cards of each card number. Then as I looped
+through the cards, I added the extra cards earned to the list. The number of cards added to each future card type
+depends on the number of current cards like `scorecards[next_card_id] += scorecards[card_id]`.
