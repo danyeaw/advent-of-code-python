@@ -1,11 +1,12 @@
 # puzzle prompt: https://adventofcode.com/2023/day/3
 import re
 from math import prod
+from typing import Dict, Tuple, List, Any
 
 from ...base import StrSplitSolution, answer
 
 
-def get_symbol_coord_to_adjacent_num(schematic: str) -> dict[str, list]:
+def get_symbol_coord_to_adjacent_num(schematic: str) -> dict[tuple[int, int], list[Any]]:
     width = len(schematic[0])
     height = len(schematic)
     symbol_coord_to_adjacent_num = {
