@@ -25,10 +25,7 @@ def shift_range(r: range, offset: int) -> range:
 
 
 def layer_transform(num: int, layer: list[tuple[range, int]]) -> int:
-    for mask, offset in layer:
-        if num in mask:
-            return num + offset
-    return num
+    return next((num + offset for mask, offset in layer if num in mask), num)
 
 
 def apply_transformations(
