@@ -12,12 +12,13 @@ def differences(pyramid_row: list[int]) -> list[int]:
 def total_extrapolated(input: list[str], reverse: bool) -> int:
     extrapolated = []
     for history_line in input:
-        pyramid = [[int(value) for value in history_line.split()]]
+        row = [int(value) for value in history_line.split()]
         if reverse:
-            pyramid[0] = list(reversed(pyramid[0]))
-        pyramid[0].append(0)
-        pyramid.extend(differences(pyramid[idx]) for idx in range(len(pyramid[0]) - 1))
-        extrapolated.append(pyramid[-1][-1] * -1)
+            row = list(reversed(row))
+        row.append(0)
+        for _ in range(len(row) - 1):
+            row = differences(row)
+        extrapolated.append(row[0] * -1)
     return sum(extrapolated)
 
 
