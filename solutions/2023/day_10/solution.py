@@ -56,9 +56,10 @@ class Solution(StrSplitSolution):
                 start = space
 
         search_queue = deque()
-        breadth = 0
-        search_queue.append((maze[start][1][0], breadth))
-        searched = []
+        breadth = 1
+        for neighbor in maze[start][1]:
+            search_queue.append((neighbor, breadth))
+        searched = [start]
         while search_queue:
             pipe, breadth_new = search_queue.popleft()
             if pipe not in searched:
