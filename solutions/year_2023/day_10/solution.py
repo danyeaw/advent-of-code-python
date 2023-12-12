@@ -11,14 +11,14 @@ def find_loop(input: list[str]):
     valid_left = "-LFS"
     valid_right = "-J7S"
     maze_size = [0, 0]
-    maze = {}
+    maze: dict[tuple[int, int], tuple[str, list[tuple[int, int]]]] = {}
     for y, line in enumerate(input):
         for x, char in enumerate(line):
             if char != ".":
                 maze[(x, y)] = char, []
             if x > maze_size[0] or y > maze_size[1]:
                 maze_size = [x, y]
-    start = ()
+    start: tuple[int, int]
     for space, (char, connected_neighbors) in maze.items():
         x, y = space
         if (
@@ -48,7 +48,7 @@ def find_loop(input: list[str]):
         if char == "S":
             start = space
 
-    search_queue = deque()
+    search_queue: deque[tuple[tuple[int, int], int]] = deque()
     breadth = 1
     for neighbor in maze[start][1]:
         search_queue.append((neighbor, breadth))

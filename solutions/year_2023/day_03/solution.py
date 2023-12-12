@@ -11,7 +11,7 @@ def get_symbol_coord_to_adjacent_num(
 ) -> dict[tuple[int, int], list[Any]]:
     width = len(schematic[0])
     height = len(schematic)
-    symbol_coord_to_adjacent_num = {
+    symbol_coord_to_adjacent_num: dict[tuple[int, int], list[int]] = {
         (r, c): []
         for r in range(width)
         for c in range(height)

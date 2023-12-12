@@ -4,10 +4,10 @@ from ...base import StrSplitSolution, answer
 
 def parse(line: str) -> tuple[list[int], list[int]]:
     _, numbers = line.replace("  ", " ").split(": ")
-    winners, my_numbers = numbers.split(" | ")
-    winners, my_numbers = winners.split(), my_numbers.split()
-    winners = [int(num) for num in winners]
-    my_numbers = [int(num) for num in my_numbers]
+    first, second = numbers.split(" | ")
+    first_list, second_list = first.split(), second.split()
+    winners = [int(num) for num in first_list]
+    my_numbers = [int(num) for num in second_list]
     return winners, my_numbers
 
 

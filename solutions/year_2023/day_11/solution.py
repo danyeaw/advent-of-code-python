@@ -1,6 +1,6 @@
 # puzzle prompt: https://adventofcode.com/2023/day/11
 
-from ...base import StrSplitSolution, answer
+from ...base import StrSplitSolution
 
 
 class Solution(StrSplitSolution):
@@ -9,9 +9,8 @@ class Solution(StrSplitSolution):
 
     # @answer(1234)
     def part_1(self) -> int:
-        pass
+        return 0
 
     # @answer(1234)
     def part_2(self) -> int:
-        pass
-
+        return 0

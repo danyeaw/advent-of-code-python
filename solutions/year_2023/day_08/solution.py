@@ -5,17 +5,18 @@ from math import lcm
 from ...base import TextSolution, answer
 
 
-def parse(lines: str) -> tuple[list[int], dict[str, str]]:
+def parse(lines: str) -> tuple[list[int], dict[str, tuple[str, str]]]:
     inputs = lines.split("\n\n")
     left_right = [
         int(direction) for direction in inputs[0].replace("L", "0").replace("R", "1")
     ]
-    nodes = inputs[1].split("\n")
+    node_lines = inputs[1].split("\n")
     nodes = [
         [node.split(" = ")[0], tuple(node.split(" = ")[1].strip("()").split(", "))]
-        for node in nodes
+        for node in node_lines
     ]
-    node_to_node = dict(nodes)
+    node_to_node: dict[str, tuple[str, str]] = dict(nodes)  # type: ignore
+    print(node_to_node)
     return left_right, node_to_node
 
 

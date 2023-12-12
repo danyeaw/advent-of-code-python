@@ -111,7 +111,7 @@ class BaseSolution(Generic[I]):
             # __file__ is the solution base
             Path(__file__).parent,
             # the 4-digit year
-            str(self.year),
+            f"year_{self.year}",
             # padded day folder
             f"day_{self.day:02}",
             # either the real input or the test input

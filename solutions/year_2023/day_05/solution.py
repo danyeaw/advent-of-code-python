@@ -89,8 +89,8 @@ class Solution(TextSolution):
     @answer(72263011)
     def part_2(self) -> int:
         blocks = self.input.split("\n\n")
-        seeds = [int(seed) for seed in blocks[0][6:].split()]
-        seeds = [range(start, start + rng) for start, rng in batched(seeds, 2)]
+        split_blocks = [int(seed) for seed in blocks[0][6:].split()]
+        seeds = [range(start, start + rng) for start, rng in batched(split_blocks, 2)]
         locations = []
         map_layers = [parse_map(block) for block in blocks[1:]]
         for seed_range in seeds:
