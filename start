@@ -22,7 +22,7 @@ PARSER.add_argument("--year", default=current_puzzle_year(), help="Puzzle year")
 if __name__ == "__main__":
     ARGS = PARSER.parse_args()
 
-    year_dir = Path("solutions", ARGS.year)
+    year_dir = Path("solutions", f"year_{ARGS.year}")
     year_dir.mkdir(parents=True, exist_ok=True)
 
     if ARGS.day is None:
