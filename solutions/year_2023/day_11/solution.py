@@ -14,20 +14,16 @@ def find_total(galaxies):
 def find_expanded_galaxies(
     split_input: list[str], expansion_num: int
 ) -> list[list[int]]:
-    image = [[char for char in line] for line in split_input]
+    image = [list(line) for line in split_input]
     galaxies: list[list[int]] = []
-    y_expansion = []
-    x_expansion = []
-    for row_num, row in enumerate(image):
-        if "#" not in row:
-            y_expansion.append(row_num)
-    for col_num, col in enumerate(list(rows) for rows in zip(*image)):
-        if "#" not in col:
-            x_expansion.append(col_num)
+    y_expansion = [row_num for row_num, row in enumerate(image) if "#" not in row]
+    x_expansion = [
+        col_num
+        for col_num, col in enumerate(list(rows) for rows in zip(*image))
+        if "#" not in col
+    ]
     for y, line in enumerate(split_input):
-        for x, char in enumerate(line):
-            if char == "#":
-                galaxies.append([x, y])
+        galaxies.extend([x, y] for x, char in enumerate(line) if char == "#")
     expansion = 0
     for y in y_expansion:
         for galaxy in galaxies:
