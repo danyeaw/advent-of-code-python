@@ -2,6 +2,19 @@
 
 from ...base import StrSplitSolution, answer
 
+NUM_CYCLES = 1_000_000
+
+
+def parse_grid(
+    raw_grid: list[list[str]], ignore_chars: str
+) -> dict[tuple[int, int], str]:
+    result = {}
+    for row, line in enumerate(raw_grid):
+        for col, c in enumerate(line):
+            if c not in ignore_chars:
+                result[row, col] = c
+    return result
+
 
 def tilt(rock_map: list[list[str]], direction: str):
     changed = True
@@ -13,7 +26,7 @@ def tilt(rock_map: list[list[str]], direction: str):
             for col_num, char in enumerate(row):
                 if char == "O":
                     if direction == "east":
-                        if col_num < len(row):
+                        if col_num > len(row) - 2:
                             continue
                         elif rock_map[row_num][col_num + 1] == ".":
                             rock_map[row_num][col_num + 1] = "O"
@@ -27,7 +40,7 @@ def tilt(rock_map: list[list[str]], direction: str):
                             rock_map[row_num][col_num] = "."
                             changed = True
                     elif direction == "south":
-                        if row_num < len(rock_map):
+                        if row_num > len(rock_map) - 2:
                             continue
                         elif rock_map[row_num + 1][col_num] == ".":
                             rock_map[row_num + 1][col_num] = "O"
@@ -51,8 +64,6 @@ class Solution(StrSplitSolution):
     def part_1(self) -> int:
         rock_map = [list(row) for row in self.input]
         rock_map = tilt(rock_map, "north")
-        for row in rock_map:
-            print(row)
         return sum(
             distance * row.count("O")
             for distance, row in enumerate(reversed(list(rock_map)), start=1)
@@ -62,12 +73,21 @@ class Solution(StrSplitSolution):
     def part_2(self) -> int:
         rock_map = [list(row) for row in self.input]
         cycle_pattern = ("north", "west", "south", "east")
-        cycles = 0
-        cycles_to_run = 1_000_000
-        while cycles < cycles_to_run + 1:
+        states: dict[frozenset[tuple[int, int]], int] = {}
+        for cycle in range(NUM_CYCLES):
             for direction in cycle_pattern:
                 rock_map = tilt(rock_map, direction)
-                cycles += 1
+            state = frozenset(parse_grid(rock_map, ignore_chars=".#"))
+            if state in states:
+                loop_length = cycle - states[state]
+                print(
+                    f"loop! {cycle=} is also {states[state]}, loop length is {loop_length}"
+                )
+                print(
+                    f"You can fit {NUM_CYCLES // loop_length} in, which puts you at {(NUM_CYCLES // loop_length) * loop_length}"
+                )
+                break
+            states[state] = cycle
         return sum(
             distance * row.count("O")
             for distance, row in enumerate(reversed(list(rock_map)), start=1)
