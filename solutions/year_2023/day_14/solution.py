@@ -5,19 +5,21 @@ from ...base import StrSplitSolution, answer
 NUM_CYCLES = 1_000_000
 
 
-def parse_grid(
-    raw_grid: list[list[str]], ignore_chars: str
-) -> dict[tuple[int, int], str]:
-    result = {}
+def parse_grid(raw_grid: list[list[str]], ignore_chars: str) -> set[tuple[int, int]]:
+    result: list[tuple[int, int]] = []
     for row, line in enumerate(raw_grid):
-        for col, c in enumerate(line):
-            if c not in ignore_chars:
-                result[row, col] = c
-    return result
+        result.extend((row, col) for col, c in enumerate(line) if c not in ignore_chars)
+    return set(result)
 
 
 def tilt(rock_map: list[list[str]], direction: str):
     changed = True
+    offset = {
+        "east": (0, 1),
+        "north": (-1, 0),
+        "south": (1, 0),
+        "west": (0, -1),
+    }
     while changed:
         changed = False
         for row_num, row in enumerate(rock_map):
@@ -25,34 +27,28 @@ def tilt(rock_map: list[list[str]], direction: str):
                 continue
             for col_num, char in enumerate(row):
                 if char == "O":
-                    if direction == "east":
-                        if col_num > len(row) - 2:
-                            continue
-                        elif rock_map[row_num][col_num + 1] == ".":
-                            rock_map[row_num][col_num + 1] = "O"
-                            rock_map[row_num][col_num] = "."
-                            changed = True
-                    elif direction == "north":
-                        if row_num == 0:
-                            continue
-                        elif rock_map[row_num - 1][col_num] == ".":
-                            rock_map[row_num - 1][col_num] = "O"
-                            rock_map[row_num][col_num] = "."
-                            changed = True
-                    elif direction == "south":
-                        if row_num > len(rock_map) - 2:
-                            continue
-                        elif rock_map[row_num + 1][col_num] == ".":
-                            rock_map[row_num + 1][col_num] = "O"
-                            rock_map[row_num][col_num] = "."
-                            changed = True
-                    elif direction == "west":
-                        if col_num == 0:
-                            continue
-                        elif rock_map[row_num][col_num - 1] == ".":
-                            rock_map[row_num][col_num - 1] = "O"
-                            rock_map[row_num][col_num] = "."
-                            changed = True
+                    if (
+                        direction == "east"
+                        and col_num > len(row) - 2
+                        or direction != "east"
+                        and direction == "north"
+                        and row_num == 0
+                        or direction != "east"
+                        and direction != "north"
+                        and direction == "south"
+                        and row_num > len(rock_map) - 2
+                        or direction != "east"
+                        and direction != "north"
+                        and direction != "south"
+                        and direction == "west"
+                        and col_num == 0
+                    ):
+                        continue
+                    row_offset, col_offset = offset[direction]
+                    if rock_map[row_num + row_offset][col_num + col_offset] == ".":
+                        rock_map[row_num + row_offset][col_num + col_offset] = "O"
+                        rock_map[row_num][col_num] = "."
+                        changed = True
     return rock_map
 
 
@@ -79,10 +75,11 @@ class Solution(StrSplitSolution):
             for direction in cycle_pattern:
                 rock_map = tilt(rock_map, direction)
             state = frozenset(parse_grid(rock_map, ignore_chars=".#"))
-            if state in states:
-                distance_to_goal = NUM_CYCLES - cycle
+            if state in states and cycle < 500:
                 loop_length = cycle - states[state]
+                distance_to_goal = NUM_CYCLES - cycle
                 cycle = NUM_CYCLES - distance_to_goal % loop_length
+                print(f"{NUM_CYCLES} - {distance_to_goal % loop_length} = {cycle}")
             states[state] = cycle
             cycle += 1
         return sum(
