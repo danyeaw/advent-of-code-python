@@ -69,25 +69,22 @@ class Solution(StrSplitSolution):
             for distance, row in enumerate(reversed(list(rock_map)), start=1)
         )
 
-    # @answer(1234)
+    @answer(87700)
     def part_2(self) -> int:
         rock_map = [list(row) for row in self.input]
         cycle_pattern = ("north", "west", "south", "east")
         states: dict[frozenset[tuple[int, int]], int] = {}
-        for cycle in range(NUM_CYCLES):
+        cycle = 0
+        while cycle < NUM_CYCLES:
             for direction in cycle_pattern:
                 rock_map = tilt(rock_map, direction)
             state = frozenset(parse_grid(rock_map, ignore_chars=".#"))
             if state in states:
+                distance_to_goal = NUM_CYCLES - cycle
                 loop_length = cycle - states[state]
-                print(
-                    f"loop! {cycle=} is also {states[state]}, loop length is {loop_length}"
-                )
-                print(
-                    f"You can fit {NUM_CYCLES // loop_length} in, which puts you at {(NUM_CYCLES // loop_length) * loop_length}"
-                )
-                break
+                cycle = NUM_CYCLES - distance_to_goal % loop_length
             states[state] = cycle
+            cycle += 1
         return sum(
             distance * row.count("O")
             for distance, row in enumerate(reversed(list(rock_map)), start=1)
