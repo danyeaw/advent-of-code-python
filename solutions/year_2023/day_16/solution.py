@@ -56,13 +56,20 @@ class State:
                 return [State(direction, self.next_position_by_direction(direction))]
             case "-" if self.direction in (Direction.UP, Direction.DOWN):
                 return [
-                    State(Direction.LEFT, self.position),
-                    State(Direction.RIGHT, self.position),
+                    State(
+                        Direction.LEFT, self.next_position_by_direction(Direction.LEFT)
+                    ),
+                    State(
+                        Direction.RIGHT,
+                        self.next_position_by_direction(Direction.RIGHT),
+                    ),
                 ]
             case "|" if self.direction in (Direction.LEFT, Direction.RIGHT):
                 return [
-                    State(Direction.UP, self.position),
-                    State(Direction.DOWN, self.position),
+                    State(Direction.UP, self.next_position_by_direction(Direction.UP)),
+                    State(
+                        Direction.DOWN, self.next_position_by_direction(Direction.DOWN)
+                    ),
                 ]
             case _:
                 raise ValueError("Invalid character")
@@ -73,10 +80,10 @@ class State:
 
     def next_position_by_direction(self, direction: Direction) -> tuple[int, int]:
         direction_to_offset = {
-            Direction.UP: (-1, 0),
-            Direction.DOWN: (1, 0),
-            Direction.RIGHT: (0, 1),
-            Direction.LEFT: (0, -1),
+            Direction.UP: (0, -1),
+            Direction.DOWN: (0, 1),
+            Direction.RIGHT: (1, 0),
+            Direction.LEFT: (-1, 0),
         }
         return add_points(self.position, direction_to_offset[direction])
 
@@ -88,7 +95,7 @@ def parse_grid(raw_grid: list[list[str]]) -> dict[tuple[int, int], str]:
     result: dict[tuple[int, int], str] = {}
     for row, line in enumerate(raw_grid):
         for col, char in enumerate(line):
-            result[(row, col)] = char
+            result[(col, row)] = char
     return result
 
 
@@ -111,6 +118,33 @@ class Solution(StrSplitSolution):
                     queue.append(next_state)
         return len({seen_state.position for seen_state in seen_states})
 
-    # @answer(1234)
+    @answer(7313)
     def part_2(self) -> int:
-        return 0
+        grid = parse_grid(self.input)
+        max_x = len(self.input[0]) - 1
+        max_y = len(self.input) - 1
+        largest_tiles = 0
+        for position in grid.keys():
+            queue: deque[State] = deque()
+            if position[0] == 0:
+                queue.append(State(Direction.RIGHT, position))
+            elif position[0] == max_x:
+                queue.append(State(Direction.LEFT, position))
+            elif position[1] == 0:
+                queue.append(State(Direction.DOWN, position))
+            elif position[1] == max_y:
+                queue.append(State(Direction.UP, position))
+            if not queue:
+                continue
+            seen_states: set[State] = set()
+            while queue:
+                current = queue.pop()
+                if current in seen_states:
+                    continue
+                seen_states.add(current)
+                for next_state in current.next_states(grid[current.position]):
+                    if next_state.position in grid:
+                        queue.append(next_state)
+            max_for_position = len({seen_state.position for seen_state in seen_states})
+            largest_tiles = max(largest_tiles, max_for_position)
+        return largest_tiles
