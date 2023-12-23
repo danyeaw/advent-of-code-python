@@ -1,12 +1,12 @@
 # puzzle prompt: https://adventofcode.com/2023/day/16
 from collections import deque
 from dataclasses import dataclass
-from enum import Enum
+from enum import IntEnum
 
 from ...base import StrSplitSolution, answer
 
 
-class Direction(Enum):
+class Direction(IntEnum):
     UP = 0
     DOWN = 1
     LEFT = 2
@@ -99,6 +99,20 @@ def parse_grid(raw_grid: list[list[str]]) -> dict[tuple[int, int], str]:
     return result
 
 
+def solve(grid: dict[tuple[int, int], str], start_state: State) -> int:
+    seen_states: set[State] = set()
+    queue: deque[State] = deque([start_state])
+    while queue:
+        current = queue.pop()
+        if current in seen_states:
+            continue
+        seen_states.add(current)
+        for next_state in current.next_states(grid[current.position]):
+            if next_state.position in grid:
+                queue.append(next_state)
+    return len({seen_state.position for seen_state in seen_states})
+
+
 class Solution(StrSplitSolution):
     _year = 2023
     _day = 16
@@ -106,45 +120,16 @@ class Solution(StrSplitSolution):
     @answer(7046)
     def part_1(self) -> int:
         grid = parse_grid(self.input)
-        seen_states: set[State] = set()
-        queue: deque[State] = deque([State(Direction.RIGHT, (0, 0))])
-        while queue:
-            current = queue.pop()
-            if current in seen_states:
-                continue
-            seen_states.add(current)
-            for next_state in current.next_states(grid[current.position]):
-                if next_state.position in grid:
-                    queue.append(next_state)
-        return len({seen_state.position for seen_state in seen_states})
+        return solve(grid, State(Direction.RIGHT, (0, 0)))
 
     @answer(7313)
     def part_2(self) -> int:
         grid = parse_grid(self.input)
-        max_x = len(self.input[0]) - 1
-        max_y = len(self.input) - 1
-        largest_tiles = 0
-        for position in grid.keys():
-            queue: deque[State] = deque()
-            if position[0] == 0:
-                queue.append(State(Direction.RIGHT, position))
-            elif position[0] == max_x:
-                queue.append(State(Direction.LEFT, position))
-            elif position[1] == 0:
-                queue.append(State(Direction.DOWN, position))
-            elif position[1] == max_y:
-                queue.append(State(Direction.UP, position))
-            if not queue:
-                continue
-            seen_states: set[State] = set()
-            while queue:
-                current = queue.pop()
-                if current in seen_states:
-                    continue
-                seen_states.add(current)
-                for next_state in current.next_states(grid[current.position]):
-                    if next_state.position in grid:
-                        queue.append(next_state)
-            max_for_position = len({seen_state.position for seen_state in seen_states})
-            largest_tiles = max(largest_tiles, max_for_position)
-        return largest_tiles
+        w = len(self.input[0])
+        h = len(self.input)
+        return max(
+            *(solve(grid, State(Direction.DOWN, (x, 0))) for x in range(w)),
+            *(solve(grid, State(Direction.UP, (x, h - 1))) for x in range(w)),
+            *(solve(grid, State(Direction.RIGHT, (0, y))) for y in range(h)),
+            *(solve(grid, State(Direction.LEFT, (w - 1, y))) for y in range(h)),
+        )
