@@ -24,12 +24,6 @@ def parse_grid(raw_grid: list[list[str]]) -> dict[Location, int]:
     return result
 
 
-def heuristic(a: Location, b: Location) -> int:
-    x1, y1 = a
-    x2, y2 = b
-    return abs(x1 - x2) + abs(y1 - y2)
-
-
 @dataclass(frozen=True, order=True)
 class State:
     position: tuple[int, int]
@@ -136,7 +130,7 @@ def a_star_search(
                 or new_cost < cost_so_far[next_neighbor]
             ):
                 cost_so_far[next_neighbor] = new_cost
-                priority = new_cost + heuristic(next_neighbor.position, goal)
+                priority = new_cost
                 frontier.put((priority, next_neighbor))
                 came_from[next_neighbor] = current
     return came_from, cost_so_far
