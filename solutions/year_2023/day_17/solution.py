@@ -5,7 +5,7 @@ from enum import IntEnum
 
 from ...base import StrSplitSolution, answer
 
-GridLocation = tuple[int, int]
+Location = tuple[int, int]
 
 
 class Direction(IntEnum):
@@ -16,67 +16,18 @@ class Direction(IntEnum):
     RIGHT = 4
 
 
-def parse_grid(raw_grid: list[list[str]]) -> dict[GridLocation, int]:
-    result: dict[GridLocation, int] = {}
+def parse_grid(raw_grid: list[list[str]]) -> dict[Location, int]:
+    result: dict[Location, int] = {}
     for y, line in enumerate(raw_grid):
         for x, char in enumerate(line):
             result[(x, y)] = int(char)
     return result
 
 
-def draw_tile(graph, id, style):
-    r = " . "
-    if "number" in style and id in style["number"]:
-        r = " %-2d" % style["number"][id]
-    if "point_to" in style and style["point_to"].get(id, None) is not None:
-        (x1, y1) = id
-        (x2, y2) = style["point_to"][id]
-        if x2 == x1 + 1:
-            r = " > "
-        if x2 == x1 - 1:
-            r = " < "
-        if y2 == y1 + 1:
-            r = " v "
-        if y2 == y1 - 1:
-            r = " ^ "
-    if "path" in style and id in style["path"]:
-        r = " @ "
-    if "start" in style and id == style["start"]:
-        r = " A "
-    if "goal" in style and id == style["goal"]:
-        r = " Z "
-    return r
-
-
-def draw_grid(graph, **style):
-    print("___" * graph.width)
-    for y in range(graph.height):
-        for x in range(graph.width):
-            print(f"{draw_tile(graph, (x, y), style)}", end="")
-        print()
-    print("~~~" * graph.width)
-
-
-def reconstruct_path(
-    came_from: dict[GridLocation, GridLocation], start: GridLocation, goal: GridLocation
-) -> list[GridLocation]:
-    current: GridLocation = goal
-    path: list[GridLocation] = []
-    if current not in came_from:  # no path was found
-        return []
-    while current != start:
-        path.append(current)
-        current = came_from[current]
-    path.append(start)  # optional
-    path.reverse()  # optional
-    return path
-
-
-def heuristic(a: GridLocation, b: GridLocation) -> int:
+def heuristic(a: Location, b: Location) -> int:
     x1, y1 = a
     x2, y2 = b
-    # return abs(x1 - x2) + abs(y1 - y2)
-    return 0
+    return abs(x1 - x2) + abs(y1 - y2)
 
 
 @dataclass(frozen=True, order=True)
@@ -86,19 +37,42 @@ class State:
     momentum: int
 
 
-class WeightedGrid:
-    def __init__(self, width: int, height: int, weights: dict[GridLocation, int]):
+class Grid:
+    def __init__(
+        self,
+        width: int,
+        height: int,
+        weights: dict[Location, int],
+        min_momentum: int,
+        max_momentum: int,
+    ):
         self.width = width
         self.height = height
         self.weights = weights
+        self.min_momentum = min_momentum
+        self.max_momentum = max_momentum
 
-    def in_bounds(self, loc: GridLocation) -> bool:
+    def in_bounds(self, loc: Location) -> bool:
         (x, y) = loc
         return 0 <= x < self.width and 0 <= y < self.height
 
     def neighbors(self, current: State) -> list[State]:
         x, y = current.position
-        if current.direction == Direction.RIGHT:
+        if current.momentum < self.min_momentum:
+            if current.direction == Direction.RIGHT:
+                neighbors = [State((x + 1, y), Direction.RIGHT, current.momentum + 1)]
+            elif current.direction == Direction.LEFT:
+                neighbors = [State((x - 1, y), Direction.LEFT, current.momentum + 1)]
+            elif current.direction == Direction.UP:
+                neighbors = [State((x, y - 1), Direction.UP, current.momentum + 1)]
+            elif current.direction == Direction.DOWN:
+                neighbors = [State((x, y + 1), Direction.DOWN, current.momentum + 1)]
+            else:
+                neighbors = [
+                    State((x + 1, y), Direction.RIGHT, 1),
+                    State((x, y + 1), Direction.DOWN, 1),
+                ]
+        elif current.direction == Direction.RIGHT:
             neighbors = [
                 State((x, y - 1), Direction.UP, 1),
                 State((x, y + 1), Direction.DOWN, 1),
@@ -130,14 +104,20 @@ class WeightedGrid:
         neighbors = [
             neighbor for neighbor in neighbors if self.in_bounds(neighbor.position)
         ]
-        neighbors = [neighbor for neighbor in neighbors if neighbor.momentum < 4]
+        neighbors = [
+            neighbor for neighbor in neighbors if neighbor.momentum < self.max_momentum
+        ]
         return neighbors
 
-    def cost(self, from_node: GridLocation, to_node: GridLocation) -> int:
+    def cost(self, from_node: Location, to_node: Location) -> int:
         return self.weights.get(to_node, 1)
 
 
-def a_star_search(grid: WeightedGrid, start: GridLocation, goal: GridLocation):
+def a_star_search(
+    grid: Grid,
+    start: Location,
+    goal: Location,
+) -> tuple[dict[State, State], dict[State, int]]:
     frontier: queue.PriorityQueue[tuple[int, State]] = queue.PriorityQueue()
     start_state = State(start, Direction.NONE, 0)
     frontier.put((0, start_state))
@@ -159,14 +139,24 @@ def a_star_search(grid: WeightedGrid, start: GridLocation, goal: GridLocation):
                 priority = new_cost + heuristic(next_neighbor.position, goal)
                 frontier.put((priority, next_neighbor))
                 came_from[next_neighbor] = current
-    # came_from_location = {k.position: v.position for k, v in came_from.items()}
-    # draw_grid(grid, point_to=came_from_location, start=start, goal=goal)
-    # print(came_from_location)
-    # print()
-    # draw_grid(grid, path=reconstruct_path(came_from_location, start=start, goal=goal))
-    # print()
-    # draw_grid(grid, number=cost_so_far, start=start, goal=goal)
     return came_from, cost_so_far
+
+
+def solve(
+    weights: dict[Location, int],
+    width: int,
+    height: int,
+    momentum_min: int,
+    momentum_max: int,
+) -> int:
+    weighted_grid = Grid(width, height, weights, momentum_min, momentum_max)
+    start, goal = (0, 0), (width - 1, height - 1)
+    came_from, cost_so_far = a_star_search(weighted_grid, start, goal)
+    return min(
+        cost
+        for state, cost in cost_so_far.items()
+        if state.position == goal and state.momentum >= momentum_min
+    )
 
 
 class Solution(StrSplitSolution):
@@ -175,16 +165,8 @@ class Solution(StrSplitSolution):
 
     @answer(859)
     def part_1(self) -> int:
-        width = len(self.input[0])
-        height = len(self.input)
-        weights = parse_grid(self.input)
-        weighted_grid = WeightedGrid(width, height, weights)
-        start, goal = (0, 0), (width - 1, height - 1)
-        came_from, cost_so_far = a_star_search(weighted_grid, start, goal)
-        return min(
-            cost for state, cost in cost_so_far.items() if state.position == goal
-        )
+        return solve(parse_grid(self.input), len(self.input[0]), len(self.input), 0, 4)
 
-    # @answer(1234)
+    @answer(1027)
     def part_2(self) -> int:
-        return 0
+        return solve(parse_grid(self.input), len(self.input[0]), len(self.input), 4, 11)
