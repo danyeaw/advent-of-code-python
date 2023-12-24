@@ -111,6 +111,7 @@ def a_star_search(
     grid: Grid,
     start: Location,
     goal: Location,
+    momentum_min: int,
 ) -> tuple[dict[State, State], dict[State, int]]:
     frontier: queue.PriorityQueue[tuple[int, State]] = queue.PriorityQueue()
     start_state = State(start, Direction.NONE, 0)
@@ -119,7 +120,7 @@ def a_star_search(
     cost_so_far: dict[State, int] = {State(start, Direction.NONE, 0): 0}
     while not frontier.empty():
         priority, current = frontier.get()
-        if current == goal:
+        if current.position == goal and current.momentum >= momentum_min:
             break
         for next_neighbor in grid.neighbors(current):
             new_cost = cost_so_far[current] + grid.cost(
@@ -145,7 +146,7 @@ def solve(
 ) -> int:
     weighted_grid = Grid(width, height, weights, momentum_min, momentum_max)
     start, goal = (0, 0), (width - 1, height - 1)
-    came_from, cost_so_far = a_star_search(weighted_grid, start, goal)
+    came_from, cost_so_far = a_star_search(weighted_grid, start, goal, momentum_min)
     return min(
         cost
         for state, cost in cost_so_far.items()
