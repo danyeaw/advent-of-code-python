@@ -12,3 +12,5 @@ perimeter and one more for 4 1/4 corners.
 
 ## Part 2
 
+To convert from hex to decimal you can do int(hex_string, 16) which is new to
+me for this challenge.
