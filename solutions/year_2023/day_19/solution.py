@@ -1,6 +1,4 @@
 # puzzle prompt: https://adventofcode.com/2023/day/19
-from typing import NamedTuple
-
 from ...base import TextSolution, answer
 
 
@@ -42,18 +40,24 @@ def apply_more(r: range, value: int):
     return r, range(0)
 
 
-class RangePart(NamedTuple):
-    x: range
-    m: range
-    a: range
-    s: range
+class RangePart:
+    __slots__ = ["x", "m", "a", "s"]
+
+    def __init__(self, x, m, a, s):
+        self.x: range = x
+        self.m: range = m
+        self.a: range = a
+        self.s: range = s
+
+    def as_dict(self):
+        return dict(x=self.x, m=self.m, a=self.a, s=self.s)
 
     @property
     def size(self):
         return len(self.x) * len(self.m) * len(self.a) * len(self.s)
 
     def _apply(self, func, name: str, value: int):
-        a, b = self._asdict(), self._asdict()
+        a, b = self.as_dict(), self.as_dict()
         a[name], b[name] = func(a[name], value)
         return RangePart(**a), RangePart(**b)
 
@@ -73,7 +77,6 @@ def make_solver2(rules):
         if name == "R":
             return 0
         result = 0
-        print(name)
         for rule in rules[name]:
             if ":" in rule:
                 cond, target = rule.split(":")
