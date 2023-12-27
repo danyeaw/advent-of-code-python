@@ -1,0 +1,60 @@
+digraph aoc {
+    flip_fx -> kh, hl
+    flip_nv -> fx, hl
+    and_vm -> zg
+    flip_rr -> rl, ql
+    and_bc -> rn, pm, rp, xg, fv, tn
+    flip_xg -> xm
+    flip_kl -> hl
+    and_hq -> xt, sp, gl, jd, jl, ss, mc
+    flip_xn -> mv, bc
+    flip_dp -> hh, ql
+    flip_mv -> bc, pp
+    flip_rg -> hq, zq
+    and_lm -> zg
+    flip_mc -> xt
+    flip_ct -> rd
+    flip_ss -> mz
+    flip_rt -> kk, hl
+    flip_mz -> hq, sp
+    flip_zq -> hq, qj
+    flip_rn -> pm
+    flip_kk -> ld
+    flip_hh -> ql, vb
+    flip_kc -> kl, hl
+    flip_pm -> tt
+    flip_fh -> bc, jn
+    and_jd -> zg
+    broadcaster -> rt, jr, rp, jl
+    flip_cp -> ql, ln
+    and_fv -> zg
+    and_ql -> ln, jr, xs, mg, vm
+    flip_xm -> bc, xn
+    flip_xt -> ss
+    flip_mg -> lt
+    flip_ln -> rr
+    flip_qj -> hq
+    flip_ld -> nv
+    flip_pp -> bc
+    flip_gl -> mc
+    flip_rd -> hl, zz
+    flip_jl -> js, hq
+    flip_jr -> xs, ql
+    flip_jn -> bc, tn
+    flip_sp -> gh
+    flip_vb -> ql
+    flip_gh -> rg, hq
+    flip_vh -> ql, dp
+    flip_js -> gl, hq
+    flip_kh -> ck
+    and_hl -> kh, rt, ct, kk, lm, ld
+    flip_rp -> fh, bc
+    flip_tt -> xg, bc
+    flip_xs -> mg
+    flip_lt -> ql, cp
+    flip_zz -> hl, kc
+    flip_tn -> rn
+    flip_ck -> hl, ct
+    flip_rl -> ql, vh
+    and_zg -> rx
+}
