@@ -68,33 +68,30 @@ class RangePart:
         return self._apply(apply_more, name, value)
 
 
-def make_solver2(rules):
-    def run(part: RangePart, name):
-        if part.size == 0:
-            return 0
-        if name == "A":
-            return part.size
-        if name == "R":
-            return 0
-        result = 0
-        for rule in rules[name]:
-            if ":" in rule:
-                cond, target = rule.split(":")
-                if ">" in cond:
-                    name, value = cond.split(">")
-                    a, part = part.apply_more(name, int(value))
-                    result += run(a, target)
-                elif "<" in cond:
-                    name, value = cond.split("<")
-                    a, part = part.apply_less(name, int(value))
-                    result += run(a, target)
-                else:
-                    assert 0, rule
+def make_solver2(workflows, part: RangePart, workflow_name: str):
+    if part.size == 0:
+        return 0
+    if workflow_name == "A":
+        return part.size
+    if workflow_name == "R":
+        return 0
+    result = 0
+    for rule in workflows[workflow_name]:
+        if ":" in rule:
+            cond, target = rule.split(":")
+            if ">" in cond:
+                workflow_name, value = cond.split(">")
+                a, part = part.apply_more(workflow_name, int(value))
+                result += make_solver2(workflows, a, target)
+            elif "<" in cond:
+                workflow_name, value = cond.split("<")
+                a, part = part.apply_less(workflow_name, int(value))
+                result += make_solver2(workflows, a, target)
             else:
-                result += run(part, rule)
-        return result
-
-    return run
+                assert 0, rule
+        else:
+            result += make_solver2(workflows, part, rule)
+    return result
 
 
 class Solution(TextSolution):
@@ -128,5 +125,4 @@ class Solution(TextSolution):
             a=range(1, 4001),
             s=range(1, 4001),
         )
-        run = make_solver2(workflows)
-        return run(part, "in")
+        return make_solver2(workflows, part, "in")
