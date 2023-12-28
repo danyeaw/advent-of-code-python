@@ -1,6 +1,6 @@
 # puzzle prompt: https://adventofcode.com/2023/day/8
-from itertools import cycle
-from math import lcm
+import itertools
+import math
 
 from ...base import TextSolution, answer
 
@@ -29,7 +29,7 @@ class Solution(TextSolution):
         left_right, node_to_node = parse(self.input)
         location = "AAA"
         count = 0
-        for direction in cycle(left_right):
+        for direction in itertools.cycle(left_right):
             location = node_to_node[location][direction]
             count += 1
             if location == "ZZZ":
@@ -46,7 +46,7 @@ class Solution(TextSolution):
         ]
         count = 0
         start_end_loop = [[0, 0] for _ in range(6)]
-        for direction in cycle(left_right):
+        for direction in itertools.cycle(left_right):
             for idx, node in enumerate(locations):
                 locations[idx] = node_to_node[node][direction]
             count += 1
@@ -65,4 +65,4 @@ class Solution(TextSolution):
             start_end_loop[idx][1] - start_end_loop[idx][0]
             for idx in range(len(start_end_loop))
         ]
-        return lcm(*loop_lengths)
+        return math.lcm(*loop_lengths)
