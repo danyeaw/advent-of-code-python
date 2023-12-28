@@ -16,7 +16,6 @@ def parse(lines: str) -> tuple[list[int], dict[str, tuple[str, str]]]:
         for node in node_lines
     ]
     node_to_node: dict[str, tuple[str, str]] = dict(nodes)  # type: ignore
-    print(node_to_node)
     return left_right, node_to_node
 
 
