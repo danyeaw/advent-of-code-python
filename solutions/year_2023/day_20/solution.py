@@ -8,9 +8,7 @@ from ...base import StrSplitSolution, answer
 def execute_button_press(
     src_to_dest: dict[str, set[str]],
     conjunctions_to_inputs: dict[str, dict[str, str]],
-    conjunctions: list[str],
-    flip_flops: list[str],
-    flip_flops_on: set[str],
+    flip_flops_to_status: dict[str, str],
     loop_lengths: dict[str, int],
     count: Counter[str],
 ):
@@ -23,16 +21,16 @@ def execute_button_press(
             loop_lengths[src] = count["part2"] - loop_lengths[src]
             if all(value != 0 for value in loop_lengths.values()):
                 lcm = math.lcm(*loop_lengths.values())
-        if dest in flip_flops and signal == "lo":
-            if dest in flip_flops_on:
-                flip_flops_on.discard(dest)
+        if dest in flip_flops_to_status and signal == "lo":
+            if flip_flops_to_status[dest] == "on":
+                flip_flops_to_status[dest] = "off"
                 new_signal = "lo"
             else:
-                flip_flops_on.add(dest)
+                flip_flops_to_status[dest] = "on"
                 new_signal = "hi"
             for new_dest in src_to_dest[dest]:
                 queue.append((new_dest, dest, new_signal))
-        elif dest in conjunctions:
+        elif dest in conjunctions_to_inputs:
             conjunctions_to_inputs[dest][src] = signal
             new_signal = (
                 "lo"
@@ -53,13 +51,11 @@ def execute_button_press(
 
 def parse(
     line_input: list[str],
-) -> tuple[
-    dict[str, set[str]], dict[str, dict[str, str]], list[str], list[str], set[str]
-]:
+) -> tuple[dict[str, set[str]], dict[str, dict[str, str]], dict[str, str]]:
     lines = [line.split(" -> ") for line in line_input]
     conjunctions: list[str] = [line[0][1:] for line in lines if line[0][0] == "&"]
-    flip_flops: list[str] = [line[0][1:] for line in lines if line[0][0] == "%"]
-    flip_flops_on: set[str] = set()
+    flip_flops_list: list[str] = [line[0][1:] for line in lines if line[0][0] == "%"]
+    flip_flops: dict[str, str] = {flip_flop: "off" for flip_flop in flip_flops_list}
     src_to_dest: dict[str, set[str]] = {
         src.replace("&", "").replace("%", ""): set(destinations.split(", "))
         for src, destinations in lines
@@ -71,7 +67,7 @@ def parse(
                 if dest not in conjunctions_to_inputs.keys():
                     conjunctions_to_inputs[dest] = {}
                 conjunctions_to_inputs[dest][src] = "lo"
-    return src_to_dest, conjunctions_to_inputs, conjunctions, flip_flops, flip_flops_on
+    return src_to_dest, conjunctions_to_inputs, flip_flops
 
 
 class Solution(StrSplitSolution):
@@ -83,18 +79,14 @@ class Solution(StrSplitSolution):
         (
             src_to_dest,
             conjunctions_to_inputs,
-            conjunctions,
             flip_flops,
-            flip_flops_on,
         ) = parse(self.input)
         count: Counter[str] = Counter(lo=0, hi=0)
         for _ in range(1000):
             count, _ = execute_button_press(
                 src_to_dest,
                 conjunctions_to_inputs,
-                conjunctions,
                 flip_flops,
-                flip_flops_on,
                 {},
                 count,
             )
@@ -105,9 +97,7 @@ class Solution(StrSplitSolution):
         (
             src_to_dest,
             conjunctions_to_inputs,
-            conjunctions,
             flip_flops,
-            flip_flops_on,
         ) = parse(self.input)
         loop_lengths: dict[str, int] = {"fv": 0, "jd": 0, "vm": 0, "lm": 0}
         lcm = 0
@@ -116,9 +106,7 @@ class Solution(StrSplitSolution):
             _, lcm = execute_button_press(
                 src_to_dest,
                 conjunctions_to_inputs,
-                conjunctions,
                 flip_flops,
-                flip_flops_on,
                 loop_lengths,
                 count,
             )
