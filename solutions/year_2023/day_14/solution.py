@@ -28,17 +28,22 @@ def tilt(rock_map: list[list[str]], direction: str):
             for col_num, char in enumerate(row):
                 if char == "O":
                     if (
-                        direction == "east"
-                        and col_num > len(row) - 2
-                        or direction != "east"
-                        and direction == "north"
-                        and row_num == 0
-                        or direction not in ("east", "north")
-                        and direction == "south"
-                        and row_num > len(rock_map) - 2
-                        or direction not in ("east", "north", "south")
-                        and direction == "west"
-                        and col_num == 0
+                        (direction == "east" and col_num > len(row) - 2)
+                        or (
+                            direction != "east"
+                            and direction == "north"
+                            and row_num == 0
+                        )
+                        or (
+                            direction not in ("east", "north")
+                            and direction == "south"
+                            and row_num > len(rock_map) - 2
+                        )
+                        or (
+                            direction not in ("east", "north", "south")
+                            and direction == "west"
+                            and col_num == 0
+                        )
                     ):
                         continue
                     row_offset, col_offset = offset[direction]

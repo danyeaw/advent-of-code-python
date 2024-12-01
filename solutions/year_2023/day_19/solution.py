@@ -41,7 +41,7 @@ def apply_more(r: range, value: int):
 
 
 class RangePart:
-    __slots__ = ["x", "m", "a", "s"]
+    __slots__ = ["a", "m", "s", "x"]
 
     def __init__(self, x: range, m: range, a: range, s: range):
         self.x = x
