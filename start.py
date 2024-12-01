@@ -25,10 +25,7 @@ if __name__ == "__main__":
     year_dir = Path("solutions", f"year_{ARGS.year}")
     year_dir.mkdir(parents=True, exist_ok=True)
 
-    if ARGS.day is None:
-        day = next_day(year_dir) + 1
-    else:
-        day = ARGS.day
+    day = next_day(year_dir) + 1 if ARGS.day is None else ARGS.day
 
     if not 1 <= day <= 25:
         PARSER.error(f"day {day} is not in range [1,25]")

@@ -6,12 +6,12 @@ import sys
 from importlib import import_module
 from pathlib import Path
 from time import perf_counter_ns
-from typing import Type, cast
+from typing import cast
 
 from misc.date_utils import current_puzzle_year, next_day
 from solutions.base import AoCException, BaseSolution
 
-__version__ = "4.0.1"
+__version__ = "4.0.3"
 
 PARSER = argparse.ArgumentParser(
     description="Run a specific day of Advent of Code", prog="advent"
@@ -56,15 +56,14 @@ def main(
     try:
         # class needs to have this name
         if day is None:
-            year_dir = Path(f"solutions/year_{year}")
+            year_dir = Path(f"solutions/{year}")
             day = next_day(year_dir)
-        else:
-            if not 1 <= day <= 25:
-                PARSER.error(f"day {day} is not in range [1,25]")
+        elif not 1 <= day <= 25:
+            PARSER.error(f"day {day} is not in range [1,25]")
 
         solution_class = cast(
-            Type[BaseSolution],
-            import_module(f"solutions.year_{year}.day_{day:02}.solution").Solution,
+            type[BaseSolution],
+            import_module(f"solutions.{year}.day_{day:02}.solution").Solution,
         )
     except ModuleNotFoundError:
         print(

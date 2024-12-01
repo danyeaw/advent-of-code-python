@@ -4,13 +4,13 @@ These are my [Advent of Code](https://adventofcode.com) solutions starting in 20
 
 ## Commands
 
-This repo has two main commands: `start` and `advent`.
+This repo has two main commands: `start.py` and `advent.py`.
 
-### `./start`
+### `./start.py`
 
 #### Usage
 
-> `./start [-h] [--year YEAR] [day]`
+> `./start.py [-h] [--year YEAR] [day]`
 
 Scaffold files to start a new Advent of Code solution
 
@@ -26,15 +26,15 @@ Scaffold files to start a new Advent of Code solution
 
 #### Examples
 
-- `./start`
-- `./start 2`
-- `./start 3 --year 2019`
+- `./start.py`
+- `./start.py 2`
+- `./start.py 3 --year 2019`
 
-### `./advent`
+### `./advent.py`
 
 #### Usage
 
-> `./advent [--year year] [--test-data] [--debug] [--profile] [--slow] [--time] [day]`
+> `./advent.py [--year year] [--test-data] [--debug] [--profile] [--slow] [--time] [day]`
 
 Run a specific day of Advent of Code
 
@@ -58,11 +58,11 @@ Run a specific day of Advent of Code
 
 #### Examples
 
-- `./advent`
-- `./advent 2`
-- `./advent 5 --year 2019`
-- `./advent 7 --test-data`
-- `./advent 9 -t --debug`
+- `./advent.py`
+- `./advent.py 2`
+- `./advent.py 5 --year 2019`
+- `./advent.py 7 --test-data`
+- `./advent.py 9 -t --debug`
 
 ## File Structure
 
@@ -88,7 +88,7 @@ solutions/
 
 Each `day_NN` folder has the following files:
 
-- `solution.py`, which has a `class Solution`. `./advent` expects both that filename and that class name exactly, so you shouldn't change them. See [Writing Solutions](#writing-solutions) for how the file is structured
+- `solution.py`, which has a `class Solution`. `./advent.py` expects both that filename and that class name exactly, so you shouldn't change them. See [Writing Solutions](#writing-solutions) for how the file is structured
 - `input.txt` holds your individualized input from the AoC site. Make sure [not to share it publicly](https://old.reddit.com/r/adventofcode/wiki/troubleshooting/no_asking_for_inputs)!
 - `input.test.txt` holds the example input from the prompt. It's read when the `--test-input` flag is used (see below). It also won't throw errors if the result doesn't match the [answer](#saving-answers). You can also do all your work in `input.txt`, but it's marginally less convenient
 - `README.md` is a convenient place to take notes or explain your solution
@@ -98,7 +98,7 @@ Each `day_NN` folder has the following files:
 ### The `Solution` Class
 
 A helpful base class on which to build your AoC solutions. It's got 2 required
-properties (which should be pre-filled if you use `./start`): `_year` and
+properties (which should be pre-filled if you use `./start.py`): `_year` and
 `_day`, corresponding to the puzzle you're solving.
 
 Your puzzle input, the parsed contents of the day's `input.txt`, will be
@@ -106,7 +106,7 @@ available at `self.input`. Learn more in [Reading Input](#reading-input).
 
 There's also a convenience method for print-based debugging: `self.debug()`.
 You can pass it any number of items and they'll get pretty-printed. It only
-prints if you use the `--debug` flag with `./advent`.
+prints if you use the `--debug` flag with `./advent.py`.
 
 ### Reading Input
 
