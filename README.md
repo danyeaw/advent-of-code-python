@@ -235,15 +235,11 @@ a convenient way to show debugging info selectively.
 
 ### Linting & Type Checking
 
-I recommend the following tools:
+I am using `pre-commit` to do linting and type checking with Ruff and Mypy.
 
-- [Ruff](https://astral.sh/ruff), a lightning-fast linter (to help you catch
-  bugs)
-- [Pyright](https://github.com/microsoft/pyright), a type checker to
-  identify logical errors (also available in VSCode using their Python plugin)
+Install pre-commit with: `pre-commit install`
 
-If you have both available, then `just lint` will run them both. I've included
-a simple `ruff` configuration file to help get you started.
+Check all files: `pre-commit run --all-files`
 
 ### Marking Slow Solutions
 
