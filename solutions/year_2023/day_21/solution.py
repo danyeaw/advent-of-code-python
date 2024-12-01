@@ -1,6 +1,6 @@
 # puzzle prompt: https://adventofcode.com/2023/day/21
 from collections import deque
-from typing import Iterator
+from collections.abc import Iterator
 
 from ...base import StrSplitSolution
 

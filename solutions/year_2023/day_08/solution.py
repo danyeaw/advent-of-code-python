@@ -39,16 +39,12 @@ class Solution(TextSolution):
     def part_2(self) -> int:
         left_right, node_to_node = parse(self.input)
         locations = [
-            init_location
-            for init_location in node_to_node.keys()
-            if init_location[2] == "A"
+            init_location for init_location in node_to_node if init_location[2] == "A"
         ]
-        count = 0
         start_end_loop = [[0, 0] for _ in range(6)]
-        for direction in itertools.cycle(left_right):
+        for count, direction in enumerate(itertools.cycle(left_right)):
             for idx, node in enumerate(locations):
                 locations[idx] = node_to_node[node][direction]
-            count += 1
             for idx, location in enumerate(locations):
                 if location[2] == "Z":
                     if start_end_loop[idx][0] == 0:

@@ -5,14 +5,14 @@ from collections import deque
 from ...base import StrSplitSolution, answer
 
 
-def find_loop(input: list[str]):
+def find_loop(list_input: list[str]):
     valid_up = "|7FS"
     valid_down = "|LJS"
     valid_left = "-LFS"
     valid_right = "-J7S"
     maze_size = [0, 0]
     maze: dict[tuple[int, int], tuple[str, list[tuple[int, int]]]] = {}
-    for y, line in enumerate(input):
+    for y, line in enumerate(list_input):
         for x, char in enumerate(line):
             if char != ".":
                 maze[(x, y)] = char, []

@@ -82,8 +82,8 @@ class Solution(TextSolution):
         locations = []
         for seed in seeds:
             for layer in map_layers:
-                seed = layer_transform(seed, layer)
-            locations.append(seed)
+                new_seed = layer_transform(seed, layer)
+            locations.append(new_seed)
         return min(locations)
 
     @answer(72263011)

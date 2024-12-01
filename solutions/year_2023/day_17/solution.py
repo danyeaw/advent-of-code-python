@@ -98,12 +98,11 @@ class Grid:
         neighbors = [
             neighbor for neighbor in neighbors if self.in_bounds(neighbor.position)
         ]
-        neighbors = [
+        return [
             neighbor for neighbor in neighbors if neighbor.momentum < self.max_momentum
         ]
-        return neighbors
 
-    def cost(self, from_node: Location, to_node: Location) -> int:
+    def cost(self, to_node: Location) -> int:
         return self.weights.get(to_node, 1)
 
 
@@ -123,9 +122,7 @@ def a_star_search(
         if current.position == goal and current.momentum >= momentum_min:
             break
         for next_neighbor in grid.neighbors(current):
-            new_cost = cost_so_far[current] + grid.cost(
-                current.position, next_neighbor.position
-            )
+            new_cost = cost_so_far[current] + grid.cost(next_neighbor.position)
             if (
                 next_neighbor not in cost_so_far
                 or new_cost < cost_so_far[next_neighbor]

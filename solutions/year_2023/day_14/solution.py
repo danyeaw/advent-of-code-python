@@ -33,13 +33,10 @@ def tilt(rock_map: list[list[str]], direction: str):
                         or direction != "east"
                         and direction == "north"
                         and row_num == 0
-                        or direction != "east"
-                        and direction != "north"
+                        or direction not in ("east", "north")
                         and direction == "south"
                         and row_num > len(rock_map) - 2
-                        or direction != "east"
-                        and direction != "north"
-                        and direction != "south"
+                        or direction not in ("east", "north", "south")
                         and direction == "west"
                         and col_num == 0
                     ):

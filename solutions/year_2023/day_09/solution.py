@@ -9,9 +9,9 @@ def differences(pyramid_row: list[int]) -> list[int]:
     ]
 
 
-def total_extrapolated(input: list[str], reverse: bool) -> int:
+def total_extrapolated(list_input: list[str], reverse: bool) -> int:
     extrapolated = []
-    for history_line in input:
+    for history_line in list_input:
         row = [int(value) for value in history_line.split()]
         if reverse:
             row = list(reversed(row))

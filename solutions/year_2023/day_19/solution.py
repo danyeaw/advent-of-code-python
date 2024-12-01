@@ -8,9 +8,9 @@ def is_approved(ratings, workflows: dict[str, str], next_workflow: str) -> bool:
     for step in workflow.split(","):
         if step == "R":
             return False
-        elif step == "A":
+        if step == "A":
             return True
-        elif ":" not in step:
+        if ":" not in step:
             return is_approved(ratings, workflows, step)
         cond = step.split(":")[0]
         if eval(cond):
@@ -43,14 +43,14 @@ def apply_more(r: range, value: int):
 class RangePart:
     __slots__ = ["x", "m", "a", "s"]
 
-    def __init__(self, x, m, a, s):
-        self.x: range = x
-        self.m: range = m
-        self.a: range = a
-        self.s: range = s
+    def __init__(self, x: range, m: range, a: range, s: range):
+        self.x = x
+        self.m = m
+        self.a = a
+        self.s = s
 
     def as_dict(self):
-        return dict(x=self.x, m=self.m, a=self.a, s=self.s)
+        return {"x": self.x, "m": self.m, "a": self.a, "s": self.s}
 
     @property
     def size(self):

@@ -64,7 +64,7 @@ def parse(
     for src, destinations in src_to_dest.items():
         for dest in destinations:
             if dest in conjunctions:
-                if dest not in conjunctions_to_inputs.keys():
+                if dest not in conjunctions_to_inputs:
                     conjunctions_to_inputs[dest] = {}
                 conjunctions_to_inputs[dest][src] = "lo"
     return src_to_dest, conjunctions_to_inputs, flip_flops
