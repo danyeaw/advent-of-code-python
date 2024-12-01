@@ -56,14 +56,14 @@ def main(
     try:
         # class needs to have this name
         if day is None:
-            year_dir = Path(f"solutions/{year}")
+            year_dir = Path(f"solutions/year_{year}")
             day = next_day(year_dir)
         elif not 1 <= day <= 25:
             PARSER.error(f"day {day} is not in range [1,25]")
 
         solution_class = cast(
             type[BaseSolution],
-            import_module(f"solutions.{year}.day_{day:02}.solution").Solution,
+            import_module(f"solutions.year_{year}.day_{day:02}.solution").Solution,
         )
     except ModuleNotFoundError:
         print(
