@@ -2,16 +2,21 @@
 
 # puzzle prompt: https://adventofcode.com/2024/day/2
 
-import itertools
+from itertools import pairwise
 
 from ...base import StrSplitSolution, answer
 
 
+def is_strictly_increasing(report: list[int]) -> bool:
+    return all(0 < y - x < 4 for (x, y) in pairwise(report))
+
+def is_strictly_decreasing(report: list[int]) -> bool:
+    return is_strictly_increasing(report[::-1])
+
+
 def is_safe(report: list[int]) -> bool:
-    differences = [y - x for (x, y) in itertools.pairwise(report)]
-    return all(0 < difference < 4 for difference in differences) or all(
-        0 > difference > -4 for difference in differences
-    )
+    return is_strictly_increasing(report) or is_strictly_decreasing(report)
+
 
 def is_safe_with_dampener(report: list[int]) -> bool:
     if is_safe(report):
