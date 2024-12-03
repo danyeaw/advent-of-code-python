@@ -2,7 +2,7 @@
 
 `RED-NOSE REPORTS` ([prompt](https://adventofcode.com/2024/day/2))
 
-Good practice with list comprehensions, all, sum, and pairwise. 
+Good practice with list comprehensions, all, sum, and pairwise.
 
 ## Part 1
 
