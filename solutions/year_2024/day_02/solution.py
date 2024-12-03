@@ -6,6 +6,7 @@ from collections.abc import Iterable
 from itertools import pairwise
 
 from ...base import StrSplitSolution, answer
+from ...utils.parsing import parse_int_list
 
 
 def is_strictly_increasing(report: list[int]) -> bool:
@@ -31,14 +32,12 @@ class Solution(StrSplitSolution):
 
     @answer(334)
     def part_1(self) -> int:
-        data = [line.split() for line in self.input]
-        reports = [[int(value) for value in line] for line in data]
+        reports = [parse_int_list(line.split()) for line in self.input]
         return sum(is_safe(report) for report in reports)
 
     @answer(400)
     def part_2(self) -> int:
-        data = [line.split() for line in self.input]
-        reports = [[int(value) for value in line] for line in data]
+        reports = [parse_int_list(line.split()) for line in self.input]
         return sum(
             is_safe(report)
             or any(is_safe(dampened) for dampened in remove_level(report))
