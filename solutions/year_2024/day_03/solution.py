@@ -17,10 +17,17 @@ class Solution(TextSolution):
         match_iter = re.finditer(pattern, self.input)
         return sum(int(match.group(1)) * int(match.group(2)) for match in match_iter)
 
-    # @answer(1234)
+    @answer(89823704)
     def part_2(self) -> int:
-        pass
-
-    # @answer((1234, 4567))
-    # def solve(self) -> tuple[int, int]:
-    #     pass
+        pattern = re.compile(r"(do\(\))|(don't\(\))|mul\((\d+),(\d+)\)")
+        match_iter = re.finditer(pattern, self.input)
+        enable_sum = True
+        total = 0
+        for match in match_iter:
+            if match.group(0) == "don't()":
+                enable_sum = False
+            elif match.group(0) == "do()":
+                enable_sum = True
+            elif enable_sum:
+                total += int(match.group(3)) * int(match.group(4))
+        return total
