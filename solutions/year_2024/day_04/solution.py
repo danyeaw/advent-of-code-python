@@ -1,24 +1,59 @@
 # Generated using @xavdid's AoC Python Template: https://github.com/xavdid/advent-of-code-python-template
+from collections.abc import Iterator
 
 # puzzle prompt: https://adventofcode.com/2024/day/4
+from ...base import StrSplitSolution
 
-from ...base import StrSplitSolution, answer
-
-
-def rotate_string_rows(list_of_str: list[str]) -> list[str]:
-    grid = [list(row) for row in list_of_str]
-    rotated_grid = list(map(list, zip(*grid)))
-    return ["".join(row) for row in rotated_grid]
+GridPoint = tuple[int, int]
+Grid = dict[GridPoint, str]
 
 
-def find_indexes(search_str: str, char: str):
-    idx = -1
-    while True:
-        idx = search_str.find(char, idx + 1)
-        if idx == -1:
-            break
-        else:
-            yield idx
+def parse_grid(raw_grid: list[str], ignore_chars: str = "") -> Grid:
+    result: Grid = {}
+    for row, line in enumerate(raw_grid):
+        for col, char in enumerate(line):
+            if char == ignore_chars:
+                continue
+            result[row, col] = char
+    return result
+
+
+def add_points(a: GridPoint, b: GridPoint) -> GridPoint:
+    return a[0] + b[0], a[1] + b[1]
+
+
+def subtract_points(a: GridPoint, b: GridPoint) -> GridPoint:
+    return a[0] - b[0], a[1] - b[1]
+
+
+OFFSETS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 0), (0, 1), (1, -1), (1, 0), (1, 1)]
+
+
+def neighbors(
+    center: GridPoint,
+    max_size: int | None,
+    num_directions=8,
+    diagonals=False,
+) -> Iterator[tuple[int, int]]:
+    assert num_directions in {4, 8, 9}
+
+    for offset_x, offset_y in OFFSETS:
+        if diagonals and not (offset_x and offset_y):
+            # orthogonal; skip
+            continue
+        if num_directions == 4 and not diagonals and offset_x and offset_y:
+            # diagonal; skip
+            continue
+        if num_directions != 9 and not (offset_x or offset_y):
+            # skip self
+            continue
+        next_x, next_y = add_points(center, (offset_x, offset_y))
+        # max size implies a min size
+        if max_size and (next_x < 0 or next_y < 0):
+            continue
+        if max_size and (next_x > max_size or next_y > max_size):
+            continue
+        yield next_x, next_y
 
 
 class Solution(StrSplitSolution):
@@ -27,40 +62,26 @@ class Solution(StrSplitSolution):
 
     # @answer(1234)
     def part_1(self) -> int:
-        ROW_SIZE = len(self.input[0])
-
-        total_horizontal_fwd = sum(row.count("XMAS") for row in self.input)
-        total_horizontal_bwd = sum(row[::-1].count("XMAS") for row in self.input)
-        vertical_strings = rotate_string_rows(self.input)
-        total_vertical_fwd = sum(row.count("XMAS") for row in vertical_strings)
-        total_vertical_bwd = sum(row[::-1].count("XMAS") for row in vertical_strings)
-        x_indices, m_indices, a_indices, s_indices = [], [], [], []
-        total_diagonal_fwd = 0
-        for line in self.input:
-            x_indices.append(find_indexes(line, "X"))
-            m_indices.append(find_indexes(line, "M"))
-            a_indices.append(find_indexes(line, "A"))
-            s_indices.append(find_indexes(line, "S"))
-        for x_row_idx, row in enumerate(x_indices):
-            for idx in row:
+        grid = parse_grid(self.input)
+        total = 0
+        for center, letter in grid.items():
+            if letter != "X":
+                continue
+            for neighbor in neighbors(center, max_size=len(self.input) - 1):
+                if grid[neighbor] != "M":
+                    continue
+                offset = subtract_points(neighbor, center)
+                next_letter = add_points(neighbor, offset)
                 if (
-                    x_row_idx + 3 < ROW_SIZE - 1
-                    and idx + 1 in m_indices[x_row_idx + 1]
-                    and idx + 2 in a_indices[x_row_idx + 2]
-                    and idx + 3 in s_indices[x_row_idx + 3]
+                    grid.get(next_letter) == "A"
+                    and grid.get(add_points(next_letter, offset)) == "S"
                 ):
-                    total_diagonal_fwd += 1
-        return (
-            total_horizontal_fwd
-            + total_horizontal_bwd
-            + total_vertical_fwd
-            + total_vertical_bwd
-            + total_diagonal_fwd
-        )
+                    total += 1
+        return total
 
     # @answer(1234)
     def part_2(self) -> int:
-        pass
+        return 0
 
     # @answer((1234, 4567))
     # def solve(self) -> tuple[int, int]:
