@@ -1,7 +1,8 @@
 # Generated using @xavdid's AoC Python Template: https://github.com/xavdid/advent-of-code-python-template
+# puzzle prompt: https://adventofcode.com/2024/day/4
+
 from collections.abc import Iterator
 
-# puzzle prompt: https://adventofcode.com/2024/day/4
 from ...base import StrSplitSolution
 
 GridPoint = tuple[int, int]
@@ -81,8 +82,21 @@ class Solution(StrSplitSolution):
 
     # @answer(1234)
     def part_2(self) -> int:
-        return 0
-
-    # @answer((1234, 4567))
-    # def solve(self) -> tuple[int, int]:
-    #     pass
+        grid = parse_grid(self.input)
+        total = 0
+        for center, letter in grid.items():
+            cross_sections = 0
+            if letter != "A":
+                continue
+            for neighbor in neighbors(
+                center, max_size=len(self.input) - 1, num_directions=4, diagonals=True
+            ):
+                if grid[neighbor] != "M":
+                    continue
+                offset = subtract_points(center, neighbor)
+                next_letter = add_points(center, offset)
+                if grid.get(next_letter) == "S":
+                    cross_sections += 1
+            if cross_sections == 2:
+                total += 1
+        return total
