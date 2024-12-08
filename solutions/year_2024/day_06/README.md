@@ -11,3 +11,5 @@ the direction using a string with a dictionary used to lookup the offset to the 
 
 Now we need to keep track of both the locations visited and the direction when visiting each location. If we
 find a duplicate, then we know we are in a loop and can add this position to the number of possible obstructions.
+
+Additionally, we only need to try to add an obstruction to points on the path from part 1.
