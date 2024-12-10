@@ -31,3 +31,4 @@ def draw_grid(grid: Grid, features: set[GridPoint]) -> None:
             else:
                 print(grid[col_num, row_num], end="")
         print()
+    print()

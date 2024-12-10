@@ -1,10 +1,9 @@
 # Day 8 (2024)
 
-`TITLE` ([prompt](https://adventofcode.com/2024/day/8))
+`RESONANT COLLINEARITY` ([prompt](https://adventofcode.com/2024/day/8))
 
-Use this space for notes on the day's solution and to document what you've learned!
+The main thing that I learned is I need to graph grid to troubleshoot issues. I added a draw_grid utility to
+help with this going forward.
 
-## Part 1
-
-## Part 2
-
+I also got stuck for a while because I was using itertools pairwise, when I should have been using
+combinations. Pairwise always returns 1 less that the total number of items.
