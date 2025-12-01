@@ -143,7 +143,7 @@ def solve(
 ) -> int:
     weighted_grid = Grid(width, height, weights, momentum_min, momentum_max)
     start, goal = (0, 0), (width - 1, height - 1)
-    came_from, cost_so_far = a_star_search(weighted_grid, start, goal, momentum_min)
+    _came_from, cost_so_far = a_star_search(weighted_grid, start, goal, momentum_min)
     return min(
         cost
         for state, cost in cost_so_far.items()

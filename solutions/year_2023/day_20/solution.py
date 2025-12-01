@@ -55,7 +55,7 @@ def parse(
     lines = [line.split(" -> ") for line in line_input]
     conjunctions: list[str] = [line[0][1:] for line in lines if line[0][0] == "&"]
     flip_flops_list: list[str] = [line[0][1:] for line in lines if line[0][0] == "%"]
-    flip_flops: dict[str, str] = {flip_flop: "off" for flip_flop in flip_flops_list}
+    flip_flops: dict[str, str] = dict.fromkeys(flip_flops_list, "off")
     src_to_dest: dict[str, set[str]] = {
         src.replace("&", "").replace("%", ""): set(destinations.split(", "))
         for src, destinations in lines

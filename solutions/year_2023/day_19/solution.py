@@ -4,7 +4,6 @@ from ...base import TextSolution, answer
 
 def is_approved(ratings, workflows: dict[str, str], next_workflow: str) -> bool:
     workflow = workflows[next_workflow]
-    x, m, a, s = ratings
     for step in workflow.split(","):
         if step == "R":
             return False

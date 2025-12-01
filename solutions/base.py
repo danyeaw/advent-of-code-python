@@ -8,12 +8,12 @@ If something in here is giving you trouble, please file an issue:
 https://github.com/xavdid/advent-of-code-python-template/issues
 """
 
+from collections.abc import Callable
 from enum import Enum, auto
 from functools import wraps
 from pathlib import Path
 from pprint import pprint
 from typing import (
-    Callable,
     Generic,
     TypeVar,
     TypeVarTuple,
@@ -68,7 +68,7 @@ class BaseSolution(Generic[I]):
         self.is_debugging = is_debugging
         self.use_test_data = use_test_data
 
-        self.input = cast(I, self.read_input())
+        self.input = cast("I", self.read_input())
 
     @property
     def year(self):

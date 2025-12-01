@@ -1,4 +1,6 @@
 # puzzle prompt: https://adventofcode.com/2023/day/18
+import itertools
+
 from solutions.base import StrSplitSolution, answer
 
 
@@ -10,7 +12,9 @@ def solve(plan: list[tuple[str, int]]) -> int:
         x, y = x + dx * distance, y + dy * distance
         lagoon.append((x, y))
         perimeter += distance
-    shoelace = sum((a[0] * b[1] - b[0] * a[1]) for a, b in zip(lagoon, lagoon[1:])) // 2
+    shoelace = (
+        sum((a[0] * b[1] - b[0] * a[1]) for a, b in itertools.pairwise(lagoon)) // 2
+    )
     return shoelace + perimeter // 2 + 1
 
 

@@ -1,9 +1,8 @@
 # Generated using @xavdid's AoC Python Template: https://github.com/xavdid/advent-of-code-python-template
 # puzzle prompt: https://adventofcode.com/2024/day/7
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from itertools import product
 from operator import add, mul
-from typing import Callable
 
 from ...base import StrSplitSolution, answer
 from ...utils.parsing import parse_int_list

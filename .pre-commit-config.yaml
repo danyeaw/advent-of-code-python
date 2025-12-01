@@ -1,19 +1,19 @@
 repos:
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: f56614daa94d5cd733d3b7004c5df9caad267b4a  # frozen: v1.13.0
+    rev: c2738302f5cf2bfb559c1f210950badb133613ea  # frozen: v1.19.0
     hooks:
       - id: mypy
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: cef0300fd0fc4d2a87a85fa2093c6b283ea36f4b  # frozen: v5.0.0
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
     hooks:
       - id: trailing-whitespace
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: a23f6b85d0fdd5bb9d564e2579e678033debbdff  # frozen: v0.10.0.1
+    rev: 745eface02aef23e168a8afb6b5737818efbea95  # frozen: v0.11.0.1
     hooks:
       - id: shellcheck
         args: [--exclude, SC1017]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: '859e42ab7d54544f32d4f73bbc2136a7d9094f54'  # frozen: v0.8.1
+    rev: '36243b70e5ce219623c3503f5afba0f8c96fda55'  # frozen: v0.14.7
     hooks:
       - id: ruff
         args: [--fix]

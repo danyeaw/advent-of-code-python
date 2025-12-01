@@ -62,7 +62,7 @@ def main(
             PARSER.error(f"day {day} is not in range [1,25]")
 
         solution_class = cast(
-            type[BaseSolution],
+            "type[BaseSolution]",
             import_module(f"solutions.year_{year}.day_{day:02}.solution").Solution,
         )
     except ModuleNotFoundError:
