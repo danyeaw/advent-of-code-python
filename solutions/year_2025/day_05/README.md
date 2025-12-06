@@ -12,3 +12,7 @@ check if a number is in a list of ranges without expanding all the ranges.
 
 ## Part 2
 
+I first tried to solve this by finding the length of a set with all the ranges expanded. Once
+again this was too slow though. Instead I created a function that combines ranges when they
+overlap. To do this it tracks the start and end we are at currently and first the next range.
+We only update the current start if there is a gap between ranges.
