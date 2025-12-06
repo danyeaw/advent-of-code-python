@@ -8,14 +8,6 @@ from functools import reduce
 from ...base import StrSplitSolution, answer
 
 
-def math_operation(op: str, values: list[int]) -> int:
-    if op == "+":
-        return sum(values)
-    if op == "*":
-        return reduce(operator.mul, values, 1)
-    return 0
-
-
 class Solution(StrSplitSolution):
     _year = 2025
     _day = 6
@@ -23,15 +15,15 @@ class Solution(StrSplitSolution):
 
     @answer(5733696195703)
     def part_1(self) -> int:
-        rows = [[num for num in row.split(" ") if num] for row in self.input]
-        columns = [list(col) for col in zip(*rows)]
-        return sum(
-            math_operation(column[-1], [int(x) for x in column[:-1]])
-            for column in columns
-        )
+        rows = [row.split() for row in self.input]
+        columns = list(zip(*rows))
+        ops = {"+": sum, "*": lambda v: reduce(operator.mul, v, 1)}
+        return sum(ops[col[-1]]([int(x) for x in col[:-1]]) for col in columns)
 
     # @answer(1234)
     def part_2(self) -> int:
+        rows = [row.split() for row in self.input]
+        print(rows)
         return 0
 
     # @answer((1234, 4567))

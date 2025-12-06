@@ -6,7 +6,7 @@ Use this space for notes on the day's solution and to document what you've learn
 
 ## Part 1
 
-`[list(col) for col in zip(*rows)]` was useful for transposing the rows in to columns.
+`list(zip(*rows))` was useful for transposing the rows in to columns.
 
 ## Part 2
 
