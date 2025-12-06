@@ -24,28 +24,25 @@ class Solution(StrSplitSolution):
     _day = 5
     separator = "\n\n"
 
-    @answer(607)
-    def part_1(self) -> int:
-        fresh_ranges_str, available_ids_str = self.input
-        fresh_tuples = [
+    def parse_fresh_ranges(self) -> list[tuple[int, ...]]:
+        """Parse fresh ranges from input into list of (start, end) tuples."""
+        fresh_ranges_str, _ = self.input
+        return [
             tuple(int(num) for num in nums_str.split("-"))
             for nums_str in fresh_ranges_str.split("\n")
         ]
-        fresh_ranges = [
-            range(id_range[0], id_range[1] + 1) for id_range in fresh_tuples
-        ]
+
+    @answer(607)
+    def part_1(self) -> int:
+        _, available_ids_str = self.input
+        fresh_tuples = self.parse_fresh_ranges()
         available_ids = [int(available) for available in available_ids_str.split("\n")]
-        return sum(1 for i in available_ids if any(i in rng for rng in fresh_ranges))
+        return sum(
+            1
+            for i in available_ids
+            if any(start <= i <= end for start, end in fresh_tuples)
+        )
 
     @answer(342433357244012)
     def part_2(self) -> int:
-        fresh_ranges_str, _ = self.input
-        fresh_tuples = [
-            tuple(int(num) for num in nums_str.split("-"))
-            for nums_str in fresh_ranges_str.split("\n")
-        ]
-        return combine_ranges(fresh_tuples)
-
-    # @answer((1234, 4567))
-    # def solve(self) -> tuple[int, int]:
-    #     pass
+        return combine_ranges(self.parse_fresh_ranges())
