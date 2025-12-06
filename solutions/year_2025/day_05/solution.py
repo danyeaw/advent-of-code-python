@@ -5,7 +5,7 @@
 from ...base import StrSplitSolution, answer
 
 
-def combine_ranges(ranges: list[tuple[int, ...]]) -> int:
+def combine_ranges(ranges: list[tuple[int, int]]) -> int:
     sorted_ranges = sorted(ranges, key=lambda x: x[0])
     total = 0
     current_start, current_end = sorted_ranges[0][0], sorted_ranges[0][1]
@@ -24,12 +24,13 @@ class Solution(StrSplitSolution):
     _day = 5
     separator = "\n\n"
 
-    def parse_fresh_ranges(self) -> list[tuple[int, ...]]:
+    def parse_fresh_ranges(self) -> list[tuple[int, int]]:
         """Parse fresh ranges from input into list of (start, end) tuples."""
         fresh_ranges_str, _ = self.input
         return [
-            tuple(int(num) for num in nums_str.split("-"))
-            for nums_str in fresh_ranges_str.split("\n")
+            (int(start), int(end))
+            for range_str in fresh_ranges_str.split("\n")
+            for start, end in [range_str.split("-")]
         ]
 
     @answer(607)
