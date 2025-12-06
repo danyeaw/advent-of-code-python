@@ -21,7 +21,7 @@ def fewer_than_four_neighbors(grid_point: GridPoint, grid: Grid) -> bool:
     total = 0
     for direction in Direction:
         search = add_points(grid_point, direction.value)
-        if search in grid and grid[search] != ".":
+        if search in grid:
             total += 1
     return total < 4
 
@@ -37,23 +37,17 @@ class Solution(StrSplitSolution):
 
     @answer(9784)
     def part_2(self) -> int:
-        grid = parse_grid(self.input)
+        grid = parse_grid(self.input, ignore_chars=".")
         total = 0
         while True:
-            removed = 0
-            grid_new = grid.copy()
-            for grid_point in grid:
-                if grid[grid_point] == ".":
-                    continue
-                if fewer_than_four_neighbors(grid_point, grid):
-                    grid_new[grid_point] = "."
-                    removed += 1
-            if removed == 0:
+            to_remove = [
+                grid_point
+                for grid_point in grid
+                if fewer_than_four_neighbors(grid_point, grid)
+            ]
+            if not to_remove:
                 break
-            total += removed
-            grid = grid_new
+            for grid_point in to_remove:
+                del grid[grid_point]
+            total += len(to_remove)
         return total
-
-    # @answer((1234, 4567))
-    # def solve(self) -> tuple[int, int]:
-    #     pass
