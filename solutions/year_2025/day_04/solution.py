@@ -1,7 +1,8 @@
 # Generated using @xavdid's AoC Python Template: https://github.com/xavdid/advent-of-code-python-template
-from enum import Enum
 
 # puzzle prompt: https://adventofcode.com/2025/day/4
+from enum import Enum
+
 from ...base import StrSplitSolution, answer
 from ...utils.graphing import Grid, GridPoint, add_points, parse_grid
 
@@ -18,12 +19,10 @@ class Direction(Enum):
 
 
 def fewer_than_four_neighbors(grid_point: GridPoint, grid: Grid) -> bool:
-    total = 0
-    for direction in Direction:
-        search = add_points(grid_point, direction.value)
-        if search in grid:
-            total += 1
-    return total < 4
+    neighbors = sum(
+        1 for direction in Direction if add_points(grid_point, direction.value) in grid
+    )
+    return neighbors < 4
 
 
 class Solution(StrSplitSolution):
