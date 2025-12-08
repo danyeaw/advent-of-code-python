@@ -11,3 +11,7 @@ location.
 
 ## Part 2
 
+This was similar to part 1, but need to use depth first search to get the number of possible
+combinations. A good tip is to use memoization, to ensure that if you visit a place on the
+grid, that the value of the possible outcomes from there is stored.
+

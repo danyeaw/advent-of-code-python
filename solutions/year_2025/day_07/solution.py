@@ -24,7 +24,7 @@ def split_beams(start_pos: GridPoint, diagram: Grid) -> int:
                 continue
             visited.add(beam)
             element = diagram[beam]
-            if element in ("S", "."):
+            if element == ".":
                 next_beams.add(add_points(beam, Direction.S.value))
             elif element == "^":
                 split1 = add_points(beam, Direction.W.value)
@@ -40,22 +40,41 @@ def split_beams(start_pos: GridPoint, diagram: Grid) -> int:
     return total
 
 
+def count_paths(start_pos: GridPoint, diagram: Grid) -> int:
+    memoization: dict[GridPoint, int] = {}
+
+    def depth_first_search(pos: GridPoint) -> int:
+        if pos in memoization:
+            return memoization[pos]
+
+        if pos not in diagram:
+            return 1
+
+        element = diagram[pos]
+
+        if element == ".":
+            result = depth_first_search(add_points(pos, Direction.S.value))
+        elif element == "^":
+            result = depth_first_search(
+                add_points(pos, Direction.W.value)
+            ) + depth_first_search(add_points(pos, Direction.E.value))
+        else:
+            result = 1
+
+        memoization[pos] = result
+        return result
+
+    return depth_first_search(add_points(start_pos, (0, 2)))
+
+
 class Solution(StrSplitSolution):
     _year = 2025
     _day = 7
 
-    @answer(1690)
-    def part_1(self) -> int:
+    @answer((1690, 221371496188107))
+    def solve(self) -> tuple[int, int]:
         diagram = parse_grid(self.input)
         start_pos: GridPoint = next(
             key for key, value in diagram.items() if value == "S"
         )
-        return split_beams(start_pos, diagram)
-
-    # @answer(1234)
-    def part_2(self) -> int:
-        return 0
-
-    # @answer((1234, 4567))
-    # def solve(self) -> tuple[int, int]:
-    #     pass
+        return split_beams(start_pos, diagram), count_paths(start_pos, diagram)
