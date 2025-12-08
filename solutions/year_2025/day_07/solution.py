@@ -23,16 +23,12 @@ def split_beams(start_pos: GridPoint, diagram: Grid) -> int:
             if beam in visited or beam not in diagram:
                 continue
             visited.add(beam)
-            element = diagram[beam]
-            if element == ".":
+
+            if diagram[beam] == ".":
                 next_beams.add(add_points(beam, Direction.S.value))
-            elif element == "^":
-                split1 = add_points(beam, Direction.W.value)
-                split2 = add_points(beam, Direction.E.value)
-                if split1 not in next_beams:
-                    next_beams.add(split1)
-                if split2 not in next_beams:
-                    next_beams.add(split2)
+            elif diagram[beam] == "^":
+                next_beams.add(add_points(beam, Direction.W.value))
+                next_beams.add(add_points(beam, Direction.E.value))
                 total += 1
 
         beams = next_beams
