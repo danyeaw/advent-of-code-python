@@ -1,0 +1,13 @@
+# Day 7 (2025)
+
+`LABORATORIES` ([prompt](https://adventofcode.com/2025/day/7))
+
+Use this space for notes on the day's solution and to document what you've learned!
+
+## Part 1
+
+Part 1 was pretty straightforward using grids and sets since beams can't repeat in the same
+location.
+
+## Part 2
+
